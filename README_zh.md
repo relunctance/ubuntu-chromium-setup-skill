@@ -1,34 +1,32 @@
 # ubuntu-chromium-setup
 
-> Install Chromium on Ubuntu / WSL Ubuntu Desktop + configure Chinese fonts to fix garbled text (e.g., Xiaohongshu)
+> Ubuntu / WSL Ubuntu 桌面版安装 Chromium + 配置中文字体，解决小红书等中文页面乱码
 
-## Overview
+## 概述
 
-Covers two installation approaches:
-- **Method A**: Install native Linux Chromium (recommended)
-- **Method B**: Reuse Windows Chrome from WSL
+包含两种安装方式和完整的中文字体配置：
+- **方式 A**：安装 Linux 原生 Chromium（推荐）
+- **方式 B**：WSL 复用 Windows Chrome
 
-Plus complete Chinese font configuration (fonts-noto-cjk + fontconfig)
+## 触发条件
 
-## Triggers
-
-- ubuntu install chrome
-- ubuntu install chromium
+- ubuntu 安装 chrome
+- ubuntu 安装 chromium
 - wsl ubuntu chrome
-- linux chinese garbled
-- 小红书乱码
-- fontconfig fonts
-- ubuntu fonts
+- linux 中文乱码
+- 小红书 乱码
+- fontconfig 字体配置
+- ubuntu 字体
 
-## Quick Setup
+## 快速安装
 
-### Method A: Native Chromium
+### 方式 A：安装原生 Chromium
 
 ```bash
-# Install
+# 安装
 sudo apt update && sudo apt install chromium-browser
 
-# Desktop icon
+# 桌面图标
 cat > ~/Desktop/chromium.desktop << 'EOF'
 [Desktop Entry]
 Version=1.0
@@ -43,7 +41,7 @@ EOF
 chmod +x ~/Desktop/chromium.desktop
 ```
 
-### Method B: Windows Chrome (WSL only)
+### 方式 B：WSL 复用 Windows Chrome
 
 ```bash
 cat > ~/Desktop/chromium.desktop << 'EOF'
@@ -60,13 +58,13 @@ EOF
 chmod +x ~/Desktop/chromium.desktop
 ```
 
-### Font Configuration (Fix Chinese Garbled Text)
+### 字体配置（解决中文乱码）
 
 ```bash
-# 1. Install Noto CJK fonts
+# 1. 安装思源黑体
 sudo apt install fonts-noto-cjk
 
-# 2. Configure fontconfig
+# 2. 配置 fontconfig
 mkdir -p ~/.config/fontconfig
 cat > ~/.config/fontconfig/fonts.conf << 'FONTSCONF'
 <?xml version="1.0"?>
@@ -105,45 +103,45 @@ cat > ~/.config/fontconfig/fonts.conf << 'FONTSCONF'
 </fontconfig>
 FONTSCONF
 
-# 3. Refresh font cache
+# 3. 刷新字体缓存
 fc-cache -f
 
-# 4. Verify
+# 4. 验证
 fc-match sans-serif  # → Noto Sans CJK SC
 fc-match emoji       # → Noto Color Emoji
 
-# 5. Set locale
+# 5. 设置 locale
 echo 'export LANG=zh_CN.UTF-8' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## Verification
+## 验证步骤
 
 ```bash
-# Font config
-fc-match sans-serif  # → NotoSansCJK-Regular.ttc: "Noto Sans CJK SC"
-fc-match emoji       # → NotoColorEmoji.ttf: "Noto Color Emoji"
+# 字体配置正确
+fc-match sans-serif  # → Noto Sans CJK SC
+fc-match emoji       # → Noto Color Emoji
 
-# Chromium
+# Chromium 可用
 chromium-browser --version
 
-# Desktop icon
+# 桌面图标存在
 ls -la ~/Desktop/chromium.desktop
 
-# Test: open https://www.xiaohongshu.com in browser
+# 打开浏览器访问 https://www.xiaohongshu.com 验证中文显示
 ```
 
-## Pitfalls
+## 踩坑记录
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| locale is `C.UTF-8` | Chromium font fallback fails | `sudo locale-gen zh_CN.UTF-8` + add to bashrc |
-| wqy-zenhei font incomplete | Many CJK chars missing | Install `fonts-noto-cjk` |
-| `.desktop` ignores shell env vars | Must pass `LANG` explicitly | Set in Exec line |
-| `<blank>false</blank>` in fonts.conf | Invalid element, silent failure | Remove it |
-| WSL git push timeout | Network to GitHub blocked | Configure `git config --global http.proxy http://192.168.1.109:10808` |
+| 坑 | 说明 | 解决方案 |
+|---|---|---|
+| locale 是 `C.UTF-8` | Chromium 字体 fallback 失效 | `sudo locale-gen zh_CN.UTF-8` + 加 bashrc |
+| wqy-zenhei 字体不全 | 很多 CJK 字符没有 | 安装 `fonts-noto-cjk` |
+| `.desktop` 不继承 shell 环境变量 | 必须显式传 `LANG=zh_CN.UTF-8` | Exec 里面写死 env |
+| `fonts.conf` 写错元素静默失败 | `<blank>false</blank>` 是非法元素 | 删除该元素 |
+| WSL git push 超时 | 网络不通 GitHub | 配置 http.proxy |
 
-## Installation
+## 安装
 
 ### OpenClaw
 ```bash
@@ -162,19 +160,19 @@ mkdir -p ~/.hermes/skills/ubuntu-chromium-setup
 cp SKILL.md ~/.hermes/skills/ubuntu-chromium-setup/
 ```
 
-### Manual (GitHub)
+### 手动（GitHub）
 ```bash
 git clone https://github.com/relunctance/ubuntu-chromium-setup.git
 ```
 
-## Platforms
+## 平台支持
 
-| Platform | Status |
-|----------|--------|
-| OpenClaw | ✅ Supported |
-| Claude Code | ✅ Supported |
-| Hermes | ✅ Supported |
+| 平台 | 状态 |
+|------|------|
+| OpenClaw | ✅ 支持 |
+| Claude Code | ✅ 支持 |
+| Hermes | ✅ 支持 |
 
-## See Also
+## 相关文档
 
-- [中文文档 (Chinese README)](README_zh.md)
+- [English README](README.md)
