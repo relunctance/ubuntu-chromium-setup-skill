@@ -18,6 +18,7 @@ category: devops
 author: relunctance
 created: 2026-05-08
 updated: 2026-05-08
+version: "1.0.0"
 tags:
   - ubuntu
   - wsl
@@ -34,9 +35,13 @@ platforms:
 
 # ubuntu-chromium-setup
 
-## 概述
+## About | 关于
 
-Ubuntu / WSL Ubuntu 桌面版安装 Chromium + 配置中文字体，解决小红书等中文页面乱码问题。
+`ubuntu-chromium-setup` provides two ways to install Chromium on Ubuntu/WSL Ubuntu Desktop and configure Chinese fonts to fix garbled text on Chinese websites (e.g., Xiaohongshu).
+
+`ubuntu-chromium-setup` 提供两种方式在 Ubuntu / WSL Ubuntu 桌面版上安装 Chromium，并配置中文字体解决小红书等中文页面的乱码问题。
+
+## 概述
 
 包含两种安装方式和完整的中文字体配置：
 - **方式 A**：安装 Linux 原生 Chromium（推荐）
@@ -59,7 +64,7 @@ Windows Chrome 路径：`/mnt/c/Program Files/Google/Chrome/Application/chrome.e
 ```bash
 sudo apt install fonts-noto-cjk
 mkdir -p ~/.config/fontconfig
-# 写入 fonts.conf（见 README_zh.md 完整内容）
+# 写入 fonts.conf（见完整文档）
 fc-cache -f
 echo 'export LANG=zh_CN.UTF-8' >> ~/.bashrc
 ```

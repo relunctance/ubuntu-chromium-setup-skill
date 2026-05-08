@@ -2,11 +2,11 @@
 
 > Ubuntu / WSL Ubuntu 桌面版安装 Chromium + 配置中文字体，解决小红书等中文页面乱码
 
-## 概述
+## 关于 | About
 
-包含两种安装方式和完整的中文字体配置：
-- **方式 A**：安装 Linux 原生 Chromium（推荐）
-- **方式 B**：WSL 复用 Windows Chrome
+`ubuntu-chromium-setup` 提供两种方式在 Ubuntu / WSL Ubuntu 桌面版上安装 Chromium，并配置中文字体解决小红书等中文页面的乱码问题。
+
+`ubuntu-chromium-setup` provides two ways to install Chromium on Ubuntu/WSL Ubuntu Desktop and configure Chinese fonts to fix garbled text on Chinese websites (e.g., Xiaohongshu).
 
 ## 触发条件
 

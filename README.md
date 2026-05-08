@@ -2,13 +2,11 @@
 
 > Install Chromium on Ubuntu / WSL Ubuntu Desktop + configure Chinese fonts to fix garbled text (e.g., Xiaohongshu)
 
-## Overview
+## About | 关于
 
-Covers two installation approaches:
-- **Method A**: Install native Linux Chromium (recommended)
-- **Method B**: Reuse Windows Chrome from WSL
+`ubuntu-chromium-setup` provides two ways to install Chromium on Ubuntu/WSL Ubuntu Desktop and configure Chinese fonts to fix garbled text on Chinese websites (e.g., Xiaohongshu).
 
-Plus complete Chinese font configuration (fonts-noto-cjk + fontconfig)
+`ubuntu-chromium-setup` 提供两种方式在 Ubuntu / WSL Ubuntu 桌面版上安装 Chromium，并配置中文字体解决小红书等中文页面的乱码问题。
 
 ## Triggers
 
