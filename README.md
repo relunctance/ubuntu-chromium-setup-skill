@@ -1,178 +1,87 @@
 # ubuntu-chromium-setup
 
-> Install Chromium on Ubuntu / WSL Ubuntu Desktop + configure Chinese fonts to fix garbled text (e.g., Xiaohongshu)
+<div align="center">
 
-## About | 关于
+![ubuntu-chromium-setup](assets/banner.svg)
 
-`ubuntu-chromium-setup` provides two ways to install Chromium on Ubuntu/WSL Ubuntu Desktop and configure Chinese fonts to fix garbled text on Chinese websites (e.g., Xiaohongshu).
+</div>
 
-`ubuntu-chromium-setup` 提供两种方式在 Ubuntu / WSL Ubuntu 桌面版上安装 Chromium，并配置中文字体解决小红书等中文页面的乱码问题。
+<p align="center">
 
-## Triggers
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![OpenClaw](https://img.shields.io/badge/OpenClaw-Supported-blueviolet)](https://github.com/openclaw)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Compatible-green)](https://claude.ai)
+[![Codex](https://img.shields.io/badge/Codex-Compatible-orange)](https://github.com)
+[![Hermes](https://img.shields.io/badge/Hermes-Agent-blue)](https://github.com)
 
-- ubuntu install chrome
-- ubuntu install chromium
-- wsl ubuntu chrome
-- linux chinese garbled
-- 小红书乱码
-- fontconfig fonts
-- ubuntu fonts
+</p>
 
-## Quick Setup
+<div align="center">
 
-### Method A: Native Chromium
+# ubuntu-chromium-setup
+
+Ubuntu / WSL Chromium 安装 + 中文字体配置，解决小红书等中文页面乱码
+
+</div>
+
+---
+
+## 核心特性
+
+| 特性 | 说明 |
+|------|------|
+| 🌐 **双模式安装** | 原生 Chromium 或复用 Windows Chrome |
+| 🇨🇳 **中文优化** | 配置中文字体，彻底解决中文乱码 |
+| 📱 **桌面图标** | 自动创建 Desktop 快捷方式 |
+
+---
+
+## 快速开始
 
 ```bash
-# Install
+# 方式 A：安装原生 Chromium
 sudo apt update && sudo apt install chromium-browser
 
-# Desktop icon
-cat > ~/Desktop/chromium.desktop << 'EOF'
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Chromium
-Icon=chromium-browser
-Exec=env LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 chromium-browser %U
-Terminal=false
-StartupNotify=true
-MimeType=text/html;text/xml;application/xhtml_xml;
-EOF
-chmod +x ~/Desktop/chromium.desktop
-```
-
-### Method B: Windows Chrome (WSL only)
-
-```bash
-cat > ~/Desktop/chromium.desktop << 'EOF'
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Google Chrome
-Icon=/mnt/c/Program Files/Google/Chrome/Application/chrome.exe
-Exec="/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" %U
-Terminal=false
-StartupNotify=true
-MimeType=text/html;text/xml;application/xhtml_xml;
-EOF
-chmod +x ~/Desktop/chromium.desktop
-```
-
-### Font Configuration (Fix Chinese Garbled Text)
-
-```bash
-# 1. Install Noto CJK fonts
+# 字体配置（解决中文乱码）
 sudo apt install fonts-noto-cjk
-
-# 2. Configure fontconfig
 mkdir -p ~/.config/fontconfig
-cat > ~/.config/fontconfig/fonts.conf << 'FONTSCONF'
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-<fontconfig>
-  <match target="pattern">
-    <edit name="lang" mode="prepend"><string>zh_CN</string></edit>
-  </match>
-
-  <alias>
-    <family>sans-serif</family>
-    <prefer>
-      <family>Noto Sans CJK SC</family>
-      <family>WenQuanYi Zen Hei</family>
-    </prefer>
-  </alias>
-  <alias>
-    <family>serif</family>
-    <prefer>
-      <family>Noto Serif CJK SC</family>
-      <family>WenQuanYi Zen Hei</family>
-    </prefer>
-  </alias>
-  <alias>
-    <family>monospace</family>
-    <prefer>
-      <family>Noto Sans Mono</family>
-    </prefer>
-  </alias>
-
-  <match target="font">
-    <edit name="antialias" mode="assign"><bool>true</bool></edit>
-    <edit name="hinting" mode="assign"><bool>true</bool></edit>
-    <edit name="hintstyle" mode="assign"><const>hintslight</const></edit>
-  </match>
-</fontconfig>
-FONTSCONF
-
-# 3. Refresh font cache
-fc-cache -f
-
-# 4. Verify
-fc-match sans-serif  # → Noto Sans CJK SC
-fc-match emoji       # → Noto Color Emoji
-
-# 5. Set locale
-echo 'export LANG=zh_CN.UTF-8' >> ~/.bashrc
-source ~/.bashrc
+# 完整配置见 SKILL.md
 ```
 
-## Verification
+完整安装步骤请查阅 [SKILL.md](SKILL.md)。
 
-```bash
-# Font config
-fc-match sans-serif  # → NotoSansCJK-Regular.ttc: "Noto Sans CJK SC"
-fc-match emoji       # → NotoColorEmoji.ttf: "Noto Color Emoji"
+---
 
-# Chromium
-chromium-browser --version
+## 触发条件
 
-# Desktop icon
-ls -la ~/Desktop/chromium.desktop
+- ubuntu 安装 chrome
+- ubuntu 安装 chromium
+- wsl ubuntu chrome
+- linux 中文乱码
+- 小红书 乱码
+- fontconfig 字体配置
 
-# Test: open https://www.xiaohongshu.com in browser
-```
+---
 
-## Pitfalls
+## 平台支持
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| locale is `C.UTF-8` | Chromium font fallback fails | `sudo locale-gen zh_CN.UTF-8` + add to bashrc |
-| wqy-zenhei font incomplete | Many CJK chars missing | Install `fonts-noto-cjk` |
-| `.desktop` ignores shell env vars | Must pass `LANG` explicitly | Set in Exec line |
-| `<blank>false</blank>` in fonts.conf | Invalid element, silent failure | Remove it |
-| WSL git push timeout | Network to GitHub blocked | Configure `git config --global http.proxy http://192.168.1.109:10808` |
+| 平台 | 状态 | 安装方式 |
+|------|------|---------|
+| OpenClaw | ✅ 支持 | `clawhub install ubuntu-chromium-setup` |
+| Claude Code | ✅ 支持 | 复制 SKILL.md 到 `~/claude/skills/ubuntu-chromium-setup/` |
+| Codex | ✅ 支持 | 复制 SKILL.md 到 `~/.codex/skills/ubuntu-chromium-setup/` |
+| Hermes | ✅ 支持 | 复制 SKILL.md 到 `~/.hermes/skills/ubuntu-chromium-setup/` |
 
-## Installation
+---
 
-### OpenClaw
-```bash
-clawhub install ubuntu-chromium-setup
-```
+## 详见
 
-### Claude Code
-```bash
-mkdir -p ~/claude/skills/ubuntu-chromium-setup
-cp SKILL.md ~/claude/skills/ubuntu-chromium-setup/
-```
+完整的 SKILL.md 定义和踩坑记录请查阅 [SKILL.md](SKILL.md)。
 
-### Hermes
-```bash
-mkdir -p ~/.hermes/skills/ubuntu-chromium-setup
-cp SKILL.md ~/.hermes/skills/ubuntu-chromium-setup/
-```
+---
 
-### Manual (GitHub)
-```bash
-git clone https://github.com/relunctance/ubuntu-chromium-setup.git
-```
+<div align="center">
 
-## Platforms
+MIT License © [relunctance](https://github.com/relunctance)
 
-| Platform | Status |
-|----------|--------|
-| OpenClaw | ✅ Supported |
-| Claude Code | ✅ Supported |
-| Hermes | ✅ Supported |
-
-## See Also
-
-- [中文文档 (Chinese README)](README_zh.md)
+</div>
